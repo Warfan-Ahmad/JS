@@ -161,7 +161,8 @@ const updateUI = function (Accoun) {
 };
 
 let currentAccount;
-//Adding event listener
+
+///////////////////////////////Adding event listener/////////////////////////////////////////
 btnLogin.addEventListener("click", function (event) {
   //Prevent from submitting
   event.preventDefault();
@@ -218,6 +219,46 @@ btnTransfer.addEventListener("click", function (event) {
     receiverAccount.movements.push(amount);
     updateUI(currentAccount);
   }
+});
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////Requesting the Loan///////////////////////////////////////////////
+
+btnLoan.addEventListener('click',function(event)
+{
+  event.preventDefault();
+   const amount = Number(inputLoanAmount.value);
+
+   if(amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1))
+   {
+     currentAccount.movements.push(amount);
+     updateUI(currentAccount);
+
+     inputLoanAmount.value = ' ';
+     inputLoanAmount.blur();
+   }
+})
+
+
+
+
+
+///////////////////////////////////Closing the Account////////////////////////////////////////////
+
+btnClose.addEventListener('click',function(event)
+{
+  event.preventDefault();
+
+
+  if(currentAccount.username === inputCloseUsername.value && currentAccount.pin === Number(inputClosePin.value))
+  {
+    const index = accounts.findIndex((acc => acc.username === currentAccount.username))
+    accounts.splice(index,1);
+    containerApp.style.opacity = 0;
+  }
+  inputCloseUsername.value = inputClosePin.value = " ";
+  inputClosePin.blur();
+  labelWelcome.textContent = `Log in to get started`
 });
 
 //////////////////////////////////////////////////////////////////////////////////////////////
